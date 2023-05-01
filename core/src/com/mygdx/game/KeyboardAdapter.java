@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 public class KeyboardAdapter extends InputAdapter {
 
     private boolean isDown;
-    private final Vector2 direction = new Vector2();
     private final Vector2 mousePos = new Vector2(-128,-128);
 
 

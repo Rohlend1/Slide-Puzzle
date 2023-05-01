@@ -3,10 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 import java.util.List;
 
@@ -14,10 +12,9 @@ import java.util.List;
 public class Cell extends Rectangle {
 
     private static int count = 0;
-    private int id;
+    private final int id;
     private final float size = 100;
     private final float halfSize = size/2;
-    private final Vector2 pos = new Vector2();
     private boolean onClick = false;
 
     private final Vector2 defaultPos;
@@ -30,7 +27,6 @@ public class Cell extends Rectangle {
         if(id==1) this.texture = new Texture("box"+id+".png");
         else if(id==2) this.texture = new Texture("box"+id+".png");
         else this.texture = new Texture("box.png");
-        pos.set(x,y);
     }
     public void render(Batch batch){
         batch.draw(texture,this.x,this.y);
@@ -49,7 +45,7 @@ public class Cell extends Rectangle {
         return onClick? this:null;
     }
 
-    public void toDeafultPostion(){
+    public void toDefaultPostion(){
         onClick=false;
         this.setPosition(defaultPos);
     }
@@ -69,7 +65,8 @@ public class Cell extends Rectangle {
         return null;
     }
 
-    public void change(Cell intersectedCell){
+    public void exchangeCells(Cell intersectedCell,int currentLevel){
+        if(Math.abs(intersectedCell.id-id) != currentLevel && Math.abs(intersectedCell.id-id) != 1) return;
         TextureData temp = texture.getTextureData();
         texture = new Texture(intersectedCell.texture.getTextureData());
         intersectedCell.texture = new Texture(temp);
