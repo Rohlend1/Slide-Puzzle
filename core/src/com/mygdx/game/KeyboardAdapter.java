@@ -13,7 +13,7 @@ public class KeyboardAdapter extends InputAdapter {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         isDown = false;
-        SlidePuzzle.onClickecCell = null;
+        GameScreen.onClickecCell = null;
         mousePos.set(-128,-128);
         return false;
     }

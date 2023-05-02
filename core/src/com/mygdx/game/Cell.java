@@ -54,9 +54,10 @@ public class Cell extends Rectangle {
     public String toString() {
         return "Cell{" +
                 "id=" + id +
-                ", onClick=" + onClick +
+                ", texture=" + texture +
                 '}';
     }
+
     public Cell isIntersect(List<Cell> cells){
         Vector2 center = new Vector2(this.x+halfSize,this.y+halfSize);
         for(Cell cell: cells){
