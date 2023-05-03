@@ -89,15 +89,13 @@ public class GameScreen implements Screen {
                 cell.exchangeCells(intersectedCell,  numberOfCells);
                 cell.toDefaultPostion();
                 intersectedCell.toDefaultPostion();
-//                intersectedCell.render(batch);
             }
             if (onClickecCell == null || onClickecCell.getId() != cell.getId()) {
                 if(!checkAndRenderTransparentCell(cell,batch))
                     cell.render(batch);
             }
         }
-        if (onClickecCell != null) {
-            if(!checkAndRenderTransparentCell(onClickecCell,batch))
+        if (onClickecCell != null && !checkAndRenderTransparentCell(onClickecCell,batch)) {
                 onClickecCell.render(batch);
         }
 
@@ -106,8 +104,6 @@ public class GameScreen implements Screen {
 
     private boolean checkAndRenderTransparentCell(Cell cell,SpriteBatch batch){
         if(cell.isTransparent()) {
-//            batch.setColor(darknessFactor,darknessFactor,darknessFactor,1f);
-//            batch.draw(cell.getTexture(),cell.x,cell.y);
             batch.setColor(Color.WHITE);
             return true;
         }

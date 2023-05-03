@@ -17,6 +17,7 @@ public class SlidePuzzle extends Game {
 	private MainMenuScreen mainMenuScreen;
 	private GameScreen gameScreen;
 
+
 	@Override
 	public void create() {
 		ImageDownloader imageDownloader = new ImageDownloader(new Stage());
@@ -26,11 +27,13 @@ public class SlidePuzzle extends Game {
 		setScreen(mainMenuScreen);
 	}
 
-	public void showMainMenu() {
+	public void showMainMenuScreen() {
 		setScreen(mainMenuScreen);
 	}
 
-	public void showAuthorsScreen(){}
+	public void showAuthorScreen(){
+		setScreen(new AuthorScreen(this));
+	}
 
 	public void showGameScreen() {
 		Gdx.input.setInputProcessor(inputProcessor);

@@ -9,14 +9,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenuScreen implements Screen {
 
     private final Stage stage;
+    private float duration = 0.5f; // Длительность каждой фазы пульсации (увеличение и уменьшение)
+    private float scale = 1.1f;
+    private ImageButton playButton;
 
     public MainMenuScreen(final SlidePuzzle game) {
         stage = new Stage();
@@ -24,33 +29,58 @@ public class MainMenuScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-        Skin skin = new Skin();
-        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
 
-        buttonStyle.font = new BitmapFont();
-        buttonStyle.fontColor = Color.BLACK;
-        buttonStyle.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("but_up.png"))));
-        buttonStyle.down = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("but_down.png"))));
+        Skin skin = new Skin();
+        ImageButton.ImageButtonStyle buttonStyle = new ImageButton.ImageButtonStyle();
+        buttonStyle.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("play_button.png"))));
         skin.add("default", buttonStyle);
-        Button playButton = new TextButton("",skin);
+
+        ImageButton playButton = new ImageButton(skin);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.showGameScreen();
             }
         });
-        Button authorButton = new TextButton("Authors", initializeButtonStyle());
 
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = new BitmapFont();
+        labelStyle.fontColor = Color.BLACK;
+
+        Label playLabel = new Label("Play", labelStyle);
+        playLabel.setAlignment(Align.center);
+
+        table.add(playButton).center().padBottom(20f).row();
+
+        Button authorButton = new TextButton("Authors", initializeButtonStyle());
         authorButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                game.showAuthorsScreen();
+                game.showAuthorScreen();
             }
         });
-        table.add(playButton).center().padBottom(20f).row();
+
         table.add(authorButton).center();
+
+        float duration = 0.5f;
+        float scale = 1.1f;
+
+        playButton.setTransform(true);
+        playButton.addAction(Actions.forever(Actions.sequence(
+                Actions.scaleTo(scale, scale, duration),
+                Actions.scaleTo(1f, 1f, duration)
+        )));
+
+        playLabel.addAction(Actions.forever(Actions.sequence(
+                Actions.scaleTo(scale, scale, duration),
+                Actions.scaleTo(1f, 1f, duration)
+        )));
+
         Gdx.input.setInputProcessor(stage);
     }
+
+
+
 
     private Skin initializeButtonStyle(){
       Skin skin = new Skin();
@@ -62,12 +92,16 @@ public class MainMenuScreen implements Screen {
     }
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(stage);
+        if(playButton!=null)
+            playButton.addAction(Actions.forever(Actions.sequence(
+                    Actions.scaleTo(1.1f, 1.1f, duration),
+                    Actions.scaleTo(1f, 1f, duration)
+            )));
     }
 
     @Override
     public void render(float delta) {
-
         ScreenUtils.clear(Color.valueOf("#ffd300"));
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
