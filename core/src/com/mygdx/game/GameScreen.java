@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -15,22 +17,30 @@ public class GameScreen implements Screen {
     private final SpriteBatch batch;
     private final Array<Cell> cells;
     private final KeyboardAdapter inputProcessor;
-    private final int currentLevel;
+    private final int numberOfCells;
     public static Cell onClickecCell;
+    private int startPositionX;
+    private int startPositionY;
 
-    public GameScreen(int currentLevel, KeyboardAdapter inputProcessor) {
-        this.currentLevel = currentLevel;
+    public GameScreen(int numberOfCells, KeyboardAdapter inputProcessor) {
+        this.numberOfCells = numberOfCells;
         batch = new SpriteBatch();
         cells = new Array<>();
         this.inputProcessor = inputProcessor;
-
-        // Создание ячеек для игры
+        countStartPosition();
         createCells();
     }
 
+    private void countStartPosition(){
+        startPositionX = Gdx.graphics.getWidth()/2-(Cell.CELL_WIDTH*numberOfCells)/2;
+        startPositionY = Gdx.graphics.getHeight()/2-(Cell.CELL_WIDTH*numberOfCells)/2;
+    }
+
     private void createCells() {
-        for (int i = 0; i < Math.pow(currentLevel + 2, 2); i++) {
-            cells.add(new Cell(200 + i / (currentLevel + 2) * 100, 200 + i % (currentLevel + 2) * 100, 100, 100));
+        for (int i = 0; i < numberOfCells*numberOfCells; i++) {
+            cells.add(new Cell( startPositionX + i / (numberOfCells) * Cell.CELL_WIDTH,
+                    startPositionY + i % (numberOfCells) * Cell.CELL_HEIGHT,
+                    Cell.CELL_WIDTH, Cell.CELL_HEIGHT));
         }
     }
 
@@ -42,9 +52,8 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         Vector2 mousePos = inputProcessor.getMousePos();
-        ScreenUtils.clear(1, 1, 1, 1);
+        ScreenUtils.clear(Color.valueOf("#ffd300"));
         batch.begin();
-
         for (Cell cell : cells) {
             if (onClickecCell == null) {
                 onClickecCell = cell.check(mousePos);
@@ -55,7 +64,7 @@ public class GameScreen implements Screen {
             Cell intersectedCell = cell.isIntersect(Arrays.asList(cells.toArray()));
             if (!inputProcessor.isDown() && intersectedCell == null) cell.toDefaultPostion();
             else if (!inputProcessor.isDown() && intersectedCell != null) {
-                cell.exchangeCells(intersectedCell, currentLevel + 2);
+                cell.exchangeCells(intersectedCell,  numberOfCells);
                 cell.toDefaultPostion();
                 intersectedCell.toDefaultPostion();
                 intersectedCell.render(batch);
@@ -88,7 +97,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        // Освобождение ресурсов
         for (Cell cell : cells) {
             cell.dispose();
         }

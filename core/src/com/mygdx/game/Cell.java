@@ -16,6 +16,8 @@ public class Cell extends Rectangle {
     private final float size = 100;
     private final float halfSize = size/2;
     private boolean onClick = false;
+    public static final int CELL_WIDTH = 100;
+    public static final int CELL_HEIGHT = 100;
 
     private final Vector2 defaultPos;
     private Texture texture;
@@ -66,13 +68,12 @@ public class Cell extends Rectangle {
         return null;
     }
 
-    public void exchangeCells(Cell intersectedCell,int currentLevel){
-        if(Math.abs(intersectedCell.id-id) != currentLevel && Math.abs(intersectedCell.id-id) != 1) return;
+    public void exchangeCells(Cell intersectedCell,int numberOfCells){
+        if(Math.abs(intersectedCell.id-id) != numberOfCells && Math.abs(intersectedCell.id-id) != 1) return;
         TextureData temp = texture.getTextureData();
         texture = new Texture(intersectedCell.texture.getTextureData());
         intersectedCell.texture = new Texture(temp);
     }
-
     public int getId() {
         return id;
     }
