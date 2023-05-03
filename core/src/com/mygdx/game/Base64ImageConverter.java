@@ -11,7 +11,7 @@ public class Base64ImageConverter {
 
         try {
             byte[] imageBytes = Base64.getDecoder().decode(base64Image);
-            Path path = Paths.get("image"+count+".jpg");
+            Path path = Paths.get("images/image"+count+".jpg");
             Files.write(path, imageBytes);
         } catch (IOException e) {
             e.printStackTrace();

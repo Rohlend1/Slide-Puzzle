@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -21,6 +22,10 @@ public class GameScreen implements Screen {
     public static Cell onClickecCell;
     private int startPositionX;
     private int startPositionY;
+    private Texture branchTexture;
+    private Vector2 branchPosition;
+    private Color branchColor;
+
 
     public GameScreen(int numberOfCells, KeyboardAdapter inputProcessor) {
         this.numberOfCells = numberOfCells;
@@ -46,14 +51,27 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        branchTexture = new Texture("branch.png");
+        branchPosition = new Vector2(Gdx.graphics.getWidth() / 2 - branchTexture.getWidth() / 2,
+                Gdx.graphics.getHeight() - branchTexture.getHeight());
+        branchColor = new Color(1f, 1f, 1f, 1f);
     }
+
+
 
     @Override
     public void render(float delta) {
+
         Vector2 mousePos = inputProcessor.getMousePos();
         ScreenUtils.clear(Color.valueOf("#ffd300"));
         batch.begin();
+        branchColor.set(1f, 1f, 1f, 0.8f);
+
+        batch.setColor(branchColor);
+        batch.draw(branchTexture, branchPosition.x, branchPosition.y);
+
+        // Сброс цвета для последующих отрисовок
+        batch.setColor(Color.WHITE);
         for (Cell cell : cells) {
             if (onClickecCell == null) {
                 onClickecCell = cell.check(mousePos);
@@ -72,6 +90,7 @@ public class GameScreen implements Screen {
             if (onClickecCell == null || onClickecCell.getId() != cell.getId()) cell.render(batch);
         }
         if (onClickecCell != null) onClickecCell.render(batch);
+
         batch.end();
     }
 

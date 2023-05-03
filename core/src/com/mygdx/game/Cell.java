@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -26,10 +27,28 @@ public class Cell extends Rectangle {
         super(x,y,width,height);
         defaultPos = new Vector2(x,y);
         System.out.println(count);
+        this.texture = createTextureWithBorder("images/image"+count+".jpg", 4);
         id = ++count;
-        this.texture = new Texture("image"+(count-1)+".jpg");
+    }
 
+    private Texture createTextureWithBorder(String imagePath, int borderWidth) {
+        Texture originalTexture = new Texture(imagePath);
+        TextureData textureData = originalTexture.getTextureData();
+        if (!textureData.isPrepared()) {
+            textureData.prepare();
+        }
 
+        Pixmap originalPixmap = textureData.consumePixmap();
+
+        int newWidth = originalPixmap.getWidth() + borderWidth * 2;
+        int newHeight = originalPixmap.getHeight() + borderWidth * 2;
+        Pixmap borderPixmap = new Pixmap(newWidth, newHeight, originalPixmap.getFormat());
+
+        borderPixmap.setColor(0f, 0f, 0f, 1f);
+        borderPixmap.fill();
+        borderPixmap.drawPixmap(originalPixmap, borderWidth, borderWidth);
+
+        return new Texture(borderPixmap);
     }
     public void render(Batch batch){
         batch.draw(texture,this.x,this.y);
