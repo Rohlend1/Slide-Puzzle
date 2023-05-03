@@ -25,6 +25,7 @@ public class GameScreen implements Screen {
     private Texture branchTexture;
     private Vector2 branchPosition;
     private Color branchColor;
+    private float darknessFactor;
 
 
     public GameScreen(int numberOfCells, KeyboardAdapter inputProcessor) {
@@ -43,10 +44,13 @@ public class GameScreen implements Screen {
 
     private void createCells() {
         for (int i = 0; i < numberOfCells*numberOfCells; i++) {
-            cells.add(new Cell( startPositionX + i / (numberOfCells) * Cell.CELL_WIDTH,
+            Cell cell = new Cell( startPositionX + i / (numberOfCells) * Cell.CELL_WIDTH,
                     startPositionY + i % (numberOfCells) * Cell.CELL_HEIGHT,
-                    Cell.CELL_WIDTH, Cell.CELL_HEIGHT));
+                    Cell.CELL_WIDTH, Cell.CELL_HEIGHT);
+            if(i == 0) cell.setTransparent(true);
+            cells.add(cell);
         }
+        darknessFactor = 0.2f;
     }
 
     @Override
@@ -85,13 +89,29 @@ public class GameScreen implements Screen {
                 cell.exchangeCells(intersectedCell,  numberOfCells);
                 cell.toDefaultPostion();
                 intersectedCell.toDefaultPostion();
-                intersectedCell.render(batch);
+//                intersectedCell.render(batch);
             }
-            if (onClickecCell == null || onClickecCell.getId() != cell.getId()) cell.render(batch);
+            if (onClickecCell == null || onClickecCell.getId() != cell.getId()) {
+                if(!checkAndRenderTransparentCell(cell,batch))
+                    cell.render(batch);
+            }
         }
-        if (onClickecCell != null) onClickecCell.render(batch);
+        if (onClickecCell != null) {
+            if(!checkAndRenderTransparentCell(onClickecCell,batch))
+                onClickecCell.render(batch);
+        }
 
         batch.end();
+    }
+
+    private boolean checkAndRenderTransparentCell(Cell cell,SpriteBatch batch){
+        if(cell.isTransparent()) {
+//            batch.setColor(darknessFactor,darknessFactor,darknessFactor,1f);
+//            batch.draw(cell.getTexture(),cell.x,cell.y);
+            batch.setColor(Color.WHITE);
+            return true;
+        }
+        return false;
     }
 
     @Override

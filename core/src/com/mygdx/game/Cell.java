@@ -19,6 +19,7 @@ public class Cell extends Rectangle {
     private boolean onClick = false;
     public static final int CELL_WIDTH = 360;
     public static final int CELL_HEIGHT = 428;
+    private boolean isTransparent = false;
 
     private final Vector2 defaultPos;
     private Texture texture;
@@ -89,12 +90,34 @@ public class Cell extends Rectangle {
     }
 
     public void exchangeCells(Cell intersectedCell,int numberOfCells){
-        if(Math.abs(intersectedCell.id-id) != numberOfCells && Math.abs(intersectedCell.id-id) != 1) return;
+        if((!intersectedCell.isTransparent && !this.isTransparent)
+                ||(Math.abs(intersectedCell.id-id) != numberOfCells && Math.abs(intersectedCell.id - id) != 1)) return;
+        if(isTransparent){
+            intersectedCell.setTransparent(true);
+            isTransparent=false;
+        }
+        else{
+            isTransparent=true;
+            intersectedCell.setTransparent(false);
+        }
         TextureData temp = texture.getTextureData();
         texture = new Texture(intersectedCell.texture.getTextureData());
         intersectedCell.texture = new Texture(temp);
     }
+
+    public void setTransparent(boolean transparent) {
+        isTransparent = transparent;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public boolean isTransparent() {
+        return isTransparent;
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 }
