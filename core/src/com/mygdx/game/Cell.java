@@ -13,11 +13,11 @@ public class Cell extends Rectangle {
 
     private static int count = 0;
     private final int id;
-    private final float size = 100;
+    private final float size = 428;
     private final float halfSize = size/2;
     private boolean onClick = false;
-    public static final int CELL_WIDTH = 100;
-    public static final int CELL_HEIGHT = 100;
+    public static final int CELL_WIDTH = 360;
+    public static final int CELL_HEIGHT = 428;
 
     private final Vector2 defaultPos;
     private Texture texture;
@@ -25,10 +25,11 @@ public class Cell extends Rectangle {
     public Cell(float x, float y, int width, int height) {
         super(x,y,width,height);
         defaultPos = new Vector2(x,y);
+        System.out.println(count);
         id = ++count;
-        if(id==1) this.texture = new Texture("box"+id+".png");
-        else if(id==2) this.texture = new Texture("box"+id+".png");
-        else this.texture = new Texture("box.png");
+        this.texture = new Texture("image"+(count-1)+".jpg");
+
+
     }
     public void render(Batch batch){
         batch.draw(texture,this.x,this.y);
