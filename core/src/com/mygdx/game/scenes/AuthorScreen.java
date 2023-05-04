@@ -1,29 +1,25 @@
-package com.mygdx.game;
+package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.SlidePuzzle;
 
 public class AuthorScreen implements Screen {
 
-    private final SlidePuzzle game;
     private final Stage stage;
-//    private final Animation<TextureAtlas.AtlasRegion> buttonAnimation;
     private final Image buttonImage;
 
     public AuthorScreen(final SlidePuzzle game) {
-        this.game = game;
         stage = new Stage();
 
         Table table = new Table();
@@ -34,15 +30,13 @@ public class AuthorScreen implements Screen {
         labelStyle.font = new BitmapFont();
         labelStyle.fontColor = Color.BLACK;
 
-        Label titleLabel = new Label("Authors", labelStyle);
+        Label titleLabel = new Label("Authors:", labelStyle);
         Label author1Label = new Label("Rohlend", labelStyle);
         Label author2Label = new Label("Barbaratimson", labelStyle);
 
         table.add(titleLabel).center().padBottom(20f).row();
         table.add(author1Label).center().padBottom(10f).row();
         table.add(author2Label).center().padBottom(10f).row();
-//        buttonAnimation = createButtonAnimation();
-//        buttonImage = new Image(buttonAnimation.getKeyFrame(0));
         buttonImage = new Image(new Texture(Gdx.files.internal("back_button.png")));
         buttonImage.addListener(new ClickListener() {
             @Override
@@ -53,13 +47,6 @@ public class AuthorScreen implements Screen {
         table.add(buttonImage).center().padTop(20f);
 
         Gdx.input.setInputProcessor(stage);
-    }
-
-    private Animation<TextureAtlas.AtlasRegion> createButtonAnimation() {
-        TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("but_down.png"));
-        Animation<TextureAtlas.AtlasRegion> animation = new Animation<>(0.1f, buttonAtlas.getRegions());
-        animation.setPlayMode(Animation.PlayMode.LOOP);
-        return animation;
     }
 
     @Override

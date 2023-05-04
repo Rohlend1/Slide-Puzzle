@@ -3,6 +3,10 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.mygdx.game.scenes.AuthorScreen;
+import com.mygdx.game.scenes.GameScreen;
+import com.mygdx.game.scenes.MainMenuScreen;
+import com.mygdx.game.scenes.WinScreen;
 
 
 public class SlidePuzzle extends Game {
@@ -10,20 +14,19 @@ public class SlidePuzzle extends Game {
 
 	private final KeyboardAdapter inputProcessor = new KeyboardAdapter();
 
-	private final int currentLevel = 1;
+	private int currentLevel = 1;
 
-	private final int numberOfCells = currentLevel+2;
+	private int numberOfCells = currentLevel+2;
 
 	private MainMenuScreen mainMenuScreen;
-	private GameScreen gameScreen;
 
 
 	@Override
 	public void create() {
 		ImageDownloader imageDownloader = new ImageDownloader(new Stage());
-		imageDownloader.downloadImages("https://5050-barbaratims-imageslicer-unt90271qxh.ws-eu96b.gitpod.io/download?image=image_2.png");
+		imageDownloader.downloadImages("https://5050-barbaratims-imageslicer-unt90271qxh.ws-eu96b.gitpod.io/download");
+
 		mainMenuScreen = new MainMenuScreen(this);
-		gameScreen = new GameScreen(numberOfCells,inputProcessor);
 		setScreen(mainMenuScreen);
 	}
 
@@ -37,7 +40,16 @@ public class SlidePuzzle extends Game {
 
 	public void showGameScreen() {
 		Gdx.input.setInputProcessor(inputProcessor);
-		setScreen(gameScreen);
+		setScreen(new GameScreen(numberOfCells,inputProcessor,this));
+	}
+
+	public void showWinScreen(){
+		setScreen(new WinScreen(this));
+	}
+
+	public void nextLevel(){
+		currentLevel+=1;
+		numberOfCells = currentLevel+2;
 	}
 
 	@Override
@@ -48,7 +60,6 @@ public class SlidePuzzle extends Game {
 
 	@Override
 	public void dispose() {
-		gameScreen.dispose();
 		mainMenuScreen.dispose();
 	}
 }

@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,25 +16,37 @@ public class Cell extends Rectangle {
 
     private static int count = 0;
     private final int id;
-    private final float size = 428;
+    private final float size = 205;
     private final float halfSize = size/2;
     private boolean onClick = false;
-    public static final int CELL_WIDTH = 360;
-    public static final int CELL_HEIGHT = 428;
+    public static final int CELL_WIDTH = 205;
+    public static final int CELL_HEIGHT = 205;
     private boolean isTransparent = false;
 
-    private final Vector2 defaultPos;
-    private Texture texture;
+    private Vector2 defaultPos;
+    private final Texture texture;
+    private String pathToImage;
+    public static final int BORDER_WIDTH = 4;
 
-    public Cell(float x, float y, int width, int height) {
+    public Cell(float x, float y, int width, int height, ArrayList<Integer> numbersOfImage) {
         super(x,y,width,height);
         defaultPos = new Vector2(x,y);
-        System.out.println(count);
-        this.texture = createTextureWithBorder("images/image"+count+".jpg", 4);
-        id = ++count;
+        int randInt = (int)(Math.random()*numbersOfImage.size());
+        pathToImage = "images/image"+numbersOfImage.get(randInt)+".jpg";
+        this.texture = createTextureWithBorder(pathToImage);
+        numbersOfImage.remove(randInt);
+        id = count++;
     }
 
-    private Texture createTextureWithBorder(String imagePath, int borderWidth) {
+    public Cell(int id,float x, float y, int width, int height,String pathToImage) {
+        super(x,y,width,height);
+        this.id = id;
+        this.defaultPos = new Vector2(x,y);
+        this.pathToImage = pathToImage;
+        texture = createTextureWithBorder(pathToImage);
+    }
+
+    private static Texture createTextureWithBorder(String imagePath) {
         Texture originalTexture = new Texture(imagePath);
         TextureData textureData = originalTexture.getTextureData();
         if (!textureData.isPrepared()) {
@@ -41,13 +55,13 @@ public class Cell extends Rectangle {
 
         Pixmap originalPixmap = textureData.consumePixmap();
 
-        int newWidth = originalPixmap.getWidth() + borderWidth * 2;
-        int newHeight = originalPixmap.getHeight() + borderWidth * 2;
+        int newWidth = originalPixmap.getWidth() + BORDER_WIDTH * 2;
+        int newHeight = originalPixmap.getHeight() + BORDER_WIDTH * 2;
         Pixmap borderPixmap = new Pixmap(newWidth, newHeight, originalPixmap.getFormat());
 
         borderPixmap.setColor(0f, 0f, 0f, 1f);
         borderPixmap.fill();
-        borderPixmap.drawPixmap(originalPixmap, borderWidth, borderWidth);
+        borderPixmap.drawPixmap(originalPixmap, BORDER_WIDTH, BORDER_WIDTH);
 
         return new Texture(borderPixmap);
     }
@@ -77,7 +91,7 @@ public class Cell extends Rectangle {
     public String toString() {
         return "Cell{" +
                 "id=" + id +
-                ", texture=" + texture +
+                ", pathToImage='" + pathToImage + '\'' +
                 '}';
     }
 
@@ -89,20 +103,18 @@ public class Cell extends Rectangle {
         return null;
     }
 
-    public void exchangeCells(Cell intersectedCell,int numberOfCells){
+    public void exchangeCells(Cell intersectedCell,int numberOfCells,Array<Cell> cells){
         if((!intersectedCell.isTransparent && !this.isTransparent)
-                ||(Math.abs(intersectedCell.id-id) != numberOfCells && Math.abs(intersectedCell.id - id) != 1)) return;
-        if(isTransparent){
-            intersectedCell.setTransparent(true);
-            isTransparent=false;
-        }
-        else{
-            isTransparent=true;
-            intersectedCell.setTransparent(false);
-        }
-        TextureData temp = texture.getTextureData();
-        texture = new Texture(intersectedCell.texture.getTextureData());
-        intersectedCell.texture = new Texture(temp);
+                ||(Math.abs(cells.indexOf(intersectedCell,false)-cells.indexOf(this,false)) != numberOfCells &&
+                Math.abs(cells.indexOf(intersectedCell,false) -cells.indexOf(this,false)) != 1)) return;
+        int tempIndexIntersected = cells.indexOf(intersectedCell,false);
+        int tempIndexCell = cells.indexOf(this,false);
+        cells.set(tempIndexIntersected,this);
+        cells.set(tempIndexCell,intersectedCell);
+
+        Vector2 tempVector = intersectedCell.getDefaultPos();
+        intersectedCell.setDefaultPos(this.getDefaultPos());
+        this.setDefaultPos(tempVector);
     }
 
     public void setTransparent(boolean transparent) {
@@ -116,8 +128,19 @@ public class Cell extends Rectangle {
     public boolean isTransparent() {
         return isTransparent;
     }
+    public Vector2 getDefaultPos() {
+        return defaultPos;
+    }
 
-    public Texture getTexture() {
-        return texture;
+    public void setDefaultPos(Vector2 defaultPos) {
+        this.defaultPos = defaultPos;
+    }
+
+    public String getPathToImage() {
+        return pathToImage;
+    }
+
+    public void setPathToImage(String pathToImage) {
+        this.pathToImage = pathToImage;
     }
 }

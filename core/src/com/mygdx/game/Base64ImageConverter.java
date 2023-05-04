@@ -10,6 +10,7 @@ public class Base64ImageConverter {
     public static void convert(String base64Image,int count) {
 
         try {
+            System.out.println("Converting");
             byte[] imageBytes = Base64.getDecoder().decode(base64Image);
             Path path = Paths.get("images/image"+count+".jpg");
             Files.write(path, imageBytes);

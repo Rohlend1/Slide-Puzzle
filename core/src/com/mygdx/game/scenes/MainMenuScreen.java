@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -15,13 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.SlidePuzzle;
 
 public class MainMenuScreen implements Screen {
 
     private final Stage stage;
-    private float duration = 0.5f; // Длительность каждой фазы пульсации (увеличение и уменьшение)
-    private float scale = 1.1f;
-    private ImageButton playButton;
 
     public MainMenuScreen(final SlidePuzzle game) {
         stage = new Stage();
@@ -93,11 +91,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        if(playButton!=null)
-            playButton.addAction(Actions.forever(Actions.sequence(
-                    Actions.scaleTo(1.1f, 1.1f, duration),
-                    Actions.scaleTo(1f, 1f, duration)
-            )));
     }
 
     @Override
