@@ -2,6 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,6 +37,12 @@ public class GameScreen implements Screen {
 
     public GameScreen(int numberOfCells, KeyboardAdapter inputProcessor,SlidePuzzle game) {
         this.numberOfCells = numberOfCells;
+        Music music = Gdx.audio.newMusic(Gdx.files.internal("gameplay_theme.mp3"));
+
+        music.setLooping(true);
+        music.setVolume(0.3f);
+
+        music.play();
         for(int i = 0; i < 9;i++){
             numbersOfImage.add(i);
         }
@@ -112,7 +119,6 @@ public class GameScreen implements Screen {
             Cell intersectedCell = cell.isIntersect(Arrays.asList(cells.toArray()));
             if (inputProcessor.isDown() && intersectedCell == null) cell.toDefaultPostion();
             else if (inputProcessor.isDown() && intersectedCell != null) {
-
                 cell.exchangeCells(intersectedCell,  numberOfCells,cells);
                 cell.toDefaultPostion();
                 intersectedCell.toDefaultPostion();

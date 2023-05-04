@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.FontGenerator;
+import com.mygdx.game.util.FontGenerator;
 import com.mygdx.game.SlidePuzzle;
 
 public class AuthorScreen implements Screen {

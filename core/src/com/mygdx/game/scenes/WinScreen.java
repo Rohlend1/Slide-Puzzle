@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.game.FontGenerator;
+import com.mygdx.game.util.FontGenerator;
 import com.mygdx.game.SlidePuzzle;
 
 public class WinScreen implements Screen {
@@ -25,10 +25,12 @@ public class WinScreen implements Screen {
 
     public WinScreen(SlidePuzzle game) {
         this.game = game;
+
     }
 
     @Override
     public void show() {
+
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
 

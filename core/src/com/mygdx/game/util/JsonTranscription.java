@@ -1,11 +1,8 @@
-package com.mygdx.game;
+package com.mygdx.game.util;
 
 public class JsonTranscription {
     private String id;
     private String url;
-
-    // Геттеры и сеттеры для полей id и url
-
     public String getId() {
         return id;
     }

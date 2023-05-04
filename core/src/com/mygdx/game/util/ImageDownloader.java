@@ -1,7 +1,6 @@
-package com.mygdx.game;
+package com.mygdx.game.util;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.IOException;
@@ -20,12 +19,8 @@ public class ImageDownloader {
 
     private final OkHttpClient client;
     private final List<JsonTranscription> images;
-    private final Stage stage;
-    private final SpriteBatch batch;
 
-    public ImageDownloader(Stage stage) {
-        this.stage = stage;
-        this.batch = (SpriteBatch) stage.getBatch();
+    public ImageDownloader() {
         this.client = new OkHttpClient();
         this.images = new ArrayList<>();
     }
@@ -61,6 +56,7 @@ public class ImageDownloader {
     }
 
     private void processImages(String jsonResponse) {
+        images.clear();
         Gson gson = new Gson();
         JsonTranscription[] imageDataArray = gson.fromJson(jsonResponse, JsonTranscription[].class);
         images.addAll(Arrays.asList(imageDataArray));

@@ -2,6 +2,7 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,12 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.game.FontGenerator;
+import com.mygdx.game.util.FontGenerator;
 import com.mygdx.game.SlidePuzzle;
 
 public class MainMenuScreen implements Screen {
 
     private final Stage stage;
+    private final Music music;
 
     public MainMenuScreen(final SlidePuzzle game) {
         stage = new Stage();
@@ -23,9 +25,16 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
         Button playButton = new TextButton("Play",initializeButtonStyle());
+        music = Gdx.audio.newMusic(Gdx.files.internal("main_theme.mp3"));
+
+        music.setLooping(true);
+        music.setVolume(0.3f);
+
+        music.play();
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                music.stop();
                 game.showGameScreen();
             }
         });
@@ -42,27 +51,8 @@ public class MainMenuScreen implements Screen {
 
         table.add(authorButton).center();
 
-//        float duration = 0.7f;
-//        float scale = 1.1f;
-//
-//        playButton.setTransform(true);
-//        playButton.setOrigin(Align.center);
-//        playButton.addAction(Actions.forever(Actions.sequence(
-//                Actions.scaleTo(scale, scale, duration,Interpolation.sine),
-//                Actions.scaleTo(1f, 1f, duration,Interpolation.sine)
-//        )));
-//        authorButton.setTransform(true);
-//        authorButton.setOrigin(Align.center);
-//        authorButton.addAction(Actions.forever(Actions.sequence(
-//                Actions.scaleTo(1f, 1f, duration, Interpolation.circle),
-//                Actions.scaleTo(0.8f, 0.8f, duration,Interpolation.circle)
-//        )));
-
         Gdx.input.setInputProcessor(stage);
     }
-
-
-
 
     private Skin initializeButtonStyle(){
       Skin skin = new Skin();
@@ -108,5 +98,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        music.dispose();
     }
 }
