@@ -4,17 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.game.FontGenerator;
 import com.mygdx.game.SlidePuzzle;
 
 public class MainMenuScreen implements Screen {
@@ -27,26 +22,13 @@ public class MainMenuScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-
-        Skin skin = new Skin();
-        ImageButton.ImageButtonStyle buttonStyle = new ImageButton.ImageButtonStyle();
-        buttonStyle.up = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("play_button.png"))));
-        skin.add("default", buttonStyle);
-
-        ImageButton playButton = new ImageButton(skin);
+        Button playButton = new TextButton("Play",initializeButtonStyle());
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.showGameScreen();
             }
         });
-
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = new BitmapFont();
-        labelStyle.fontColor = Color.BLACK;
-
-        Label playLabel = new Label("Play", labelStyle);
-        playLabel.setAlignment(Align.center);
 
         table.add(playButton).center().padBottom(20f).row();
 
@@ -60,19 +42,21 @@ public class MainMenuScreen implements Screen {
 
         table.add(authorButton).center();
 
-        float duration = 0.5f;
-        float scale = 1.1f;
-
-        playButton.setTransform(true);
-        playButton.addAction(Actions.forever(Actions.sequence(
-                Actions.scaleTo(scale, scale, duration),
-                Actions.scaleTo(1f, 1f, duration)
-        )));
-
-        playLabel.addAction(Actions.forever(Actions.sequence(
-                Actions.scaleTo(scale, scale, duration),
-                Actions.scaleTo(1f, 1f, duration)
-        )));
+//        float duration = 0.7f;
+//        float scale = 1.1f;
+//
+//        playButton.setTransform(true);
+//        playButton.setOrigin(Align.center);
+//        playButton.addAction(Actions.forever(Actions.sequence(
+//                Actions.scaleTo(scale, scale, duration,Interpolation.sine),
+//                Actions.scaleTo(1f, 1f, duration,Interpolation.sine)
+//        )));
+//        authorButton.setTransform(true);
+//        authorButton.setOrigin(Align.center);
+//        authorButton.addAction(Actions.forever(Actions.sequence(
+//                Actions.scaleTo(1f, 1f, duration, Interpolation.circle),
+//                Actions.scaleTo(0.8f, 0.8f, duration,Interpolation.circle)
+//        )));
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -83,8 +67,8 @@ public class MainMenuScreen implements Screen {
     private Skin initializeButtonStyle(){
       Skin skin = new Skin();
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = new BitmapFont();
-        buttonStyle.fontColor = Color.BLACK;
+        buttonStyle.font = FontGenerator.generateFont(28,"roboto_bold.ttf");
+        buttonStyle.fontColor = buttonStyle.font.getColor();
         skin.add("default", buttonStyle);
         return skin;
     }
@@ -95,7 +79,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.valueOf("#ffd300"));
+        ScreenUtils.clear(Color.valueOf("#d9d375"));
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();

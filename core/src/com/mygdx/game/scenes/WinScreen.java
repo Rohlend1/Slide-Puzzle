@@ -2,7 +2,6 @@ package com.mygdx.game.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.FontGenerator;
 import com.mygdx.game.SlidePuzzle;
 
 public class WinScreen implements Screen {
@@ -37,13 +37,16 @@ public class WinScreen implements Screen {
 
         backgroundTexture = new Texture("background.png");
 
-        Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.BLACK);
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = FontGenerator.generateFont(24,"roboto_bold.ttf");
+        labelStyle.fontColor = labelStyle.font.getColor();
         Label messageLabel = new Label("Congratulations! You win!", labelStyle);
+
         messageLabel.setPosition( Gdx.graphics.getWidth() / 2 - messageLabel.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = font;
-        buttonStyle.fontColor = Color.BLACK;
+        buttonStyle.font = FontGenerator.generateFont(18,"roboto_medium.ttf");
+        buttonStyle.fontColor = buttonStyle.font.getColor();
         Button nextLevelButton = new TextButton("Next Level", buttonStyle);
         nextLevelButton.setPosition(Gdx.graphics.getWidth() / 2 - nextLevelButton.getWidth() / 2, Gdx.graphics.getHeight() / 2 - 100);
 

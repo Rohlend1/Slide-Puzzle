@@ -95,7 +95,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         Vector2 mousePos = inputProcessor.getMousePos();
-        ScreenUtils.clear(Color.valueOf("#ffd300"));
+        ScreenUtils.clear(Color.valueOf("#d9d375"));
         batch.begin();
         branchColor.set(1f, 1f, 1f, 0.8f);
 
