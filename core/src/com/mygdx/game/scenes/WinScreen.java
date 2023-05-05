@@ -37,17 +37,17 @@ public class WinScreen implements Screen {
         batch = new SpriteBatch();
         font = new BitmapFont();
 
-        backgroundTexture = new Texture("background.png");
+        backgroundTexture = new Texture("sprites/background.png");
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = FontGenerator.generateFont(24,"roboto_bold.ttf");
+        labelStyle.font = FontGenerator.generateFont(24,"fonts/roboto_bold.ttf");
         labelStyle.fontColor = labelStyle.font.getColor();
         Label messageLabel = new Label("Congratulations! You win!", labelStyle);
 
         messageLabel.setPosition( Gdx.graphics.getWidth() / 2 - messageLabel.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = FontGenerator.generateFont(18,"roboto_medium.ttf");
+        buttonStyle.font = FontGenerator.generateFont(18,"fonts/roboto_medium.ttf");
         buttonStyle.fontColor = buttonStyle.font.getColor();
         Button nextLevelButton = new TextButton("Next Level", buttonStyle);
         nextLevelButton.setPosition(Gdx.graphics.getWidth() / 2 - nextLevelButton.getWidth() / 2, Gdx.graphics.getHeight() / 2 - 100);

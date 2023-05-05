@@ -25,7 +25,7 @@ public class MainMenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
         Button playButton = new TextButton("Play",initializeButtonStyle());
-        music = Gdx.audio.newMusic(Gdx.files.internal("main_theme.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/main_theme.mp3"));
 
         music.setLooping(true);
         music.setVolume(0.3f);
@@ -57,7 +57,7 @@ public class MainMenuScreen implements Screen {
     private Skin initializeButtonStyle(){
       Skin skin = new Skin();
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = FontGenerator.generateFont(28,"roboto_bold.ttf");
+        buttonStyle.font = FontGenerator.generateFont(28,"fonts/roboto_bold.ttf");
         buttonStyle.fontColor = buttonStyle.font.getColor();
         skin.add("default", buttonStyle);
         return skin;

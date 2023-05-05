@@ -32,27 +32,38 @@ public class GameScreen implements Screen {
     private Array<Cell> validationCellGrid = new Array<>();
     private boolean isWin = false;
     private final SlidePuzzle game;
-    private static final ArrayList<Integer> numbersOfImage = new ArrayList<>();
+    private final Texture ipaitLogoTexture =new Texture(Gdx.files.internal("sprites/ipait_logo.png"));
+    private Vector2 ipaitLogoPosition;
+    private static final int LOGO_WIDTH = 200;
+    private static final int LOGO_HEIGHT = 212;
+
+    private static Texture levelCompressedPicture;
+    private static Vector2 compressedLevelPosition;
 
 
     public GameScreen(int numberOfCells, KeyboardAdapter inputProcessor,SlidePuzzle game) {
         this.numberOfCells = numberOfCells;
-        Music music = Gdx.audio.newMusic(Gdx.files.internal("gameplay_theme.mp3"));
 
+        Music music = Gdx.audio.newMusic(Gdx.files.internal("music/gameplay_theme.mp3"));
         music.setLooping(true);
         music.setVolume(0.3f);
-
         music.play();
-        for(int i = 0; i < 9;i++){
-            numbersOfImage.add(i);
-        }
+
         batch = new SpriteBatch();
         cells = new Array<>();
         this.game = game;
         this.inputProcessor = inputProcessor;
+
+        createValidationGrid();
         countStartPosition();
         createCells();
-        createValidationGrid();
+
+
+        while(!countInversions()) {
+            cells.clear();
+            createCells();
+        }
+
     }
 
     private void countStartPosition(){
@@ -75,6 +86,10 @@ public class GameScreen implements Screen {
         }
     }
     private void createCells() {
+        ArrayList<Integer> numbersOfImage = new ArrayList<>();
+        for(int i = 0; i < 9;i++){
+            numbersOfImage.add(i);
+        }
         for (int i = 0; i < numberOfCells * numberOfCells; i++) {
             Cell cell = new Cell(startPositionX + i / (numberOfCells) * Cell.CELL_WIDTH,
                     startPositionY + i % (numberOfCells) * Cell.CELL_HEIGHT,
@@ -82,6 +97,14 @@ public class GameScreen implements Screen {
             if (i == 0) cell.setTransparent(true);
             cells.add(cell);
         }
+    }
+    private boolean countInversions(){
+        float counter = 0;
+        for(int i = 0; i < numberOfCells*numberOfCells;i++){
+            if(!cells.get(i).getPathToImage().equals(validationCellGrid.get(i).getPathToImage()) && !cells.get(i).isTransparent()) counter++;
+        }
+        System.out.println(counter);
+        return (counter/2)%2==0;
     }
     private boolean validate(){
         for(int i = 0; i < numberOfCells*numberOfCells;i++){
@@ -91,7 +114,10 @@ public class GameScreen implements Screen {
     }
     @Override
     public void show() {
-        branchTexture = new Texture("branch.png");
+        levelCompressedPicture = new Texture("levels/level_"+SlidePuzzle.currentLevel+"_compressed.jpg");
+        compressedLevelPosition = new Vector2(Gdx.graphics.getWidth()-400,Gdx.graphics.getHeight()-250);
+        ipaitLogoPosition = new Vector2(0,Gdx.graphics.getHeight()-LOGO_HEIGHT);
+        branchTexture = new Texture("sprites/branch.png");
         branchPosition = new Vector2(Gdx.graphics.getWidth() / 2 - branchTexture.getWidth() / 2,
                 Gdx.graphics.getHeight() - branchTexture.getHeight());
         branchColor = new Color(1f, 1f, 1f, 1f);
@@ -109,6 +135,8 @@ public class GameScreen implements Screen {
         batch.setColor(branchColor);
         batch.draw(branchTexture, branchPosition.x, branchPosition.y);
         batch.setColor(Color.WHITE);
+        batch.draw(ipaitLogoTexture,ipaitLogoPosition.x,ipaitLogoPosition.y);
+        batch.draw(levelCompressedPicture,compressedLevelPosition.x,compressedLevelPosition.y);
         for (Cell cell : cells) {
             if (onClickecCell == null) {
                 onClickecCell = cell.check(mousePos);

@@ -15,9 +15,9 @@ public class SlidePuzzle extends Game {
 
 	private final KeyboardAdapter inputProcessor = new KeyboardAdapter();
 
-	public static int currentLevel = 1;
+	public static int currentLevel = 3;
 
-	private int numberOfCells = currentLevel+2;
+	private final int numberOfCells = 3;
 	public static ImageDownloader imageDownloader;
 
 	private MainMenuScreen mainMenuScreen;
@@ -26,7 +26,7 @@ public class SlidePuzzle extends Game {
 	@Override
 	public void create() {
 		imageDownloader = new ImageDownloader();
-		imageDownloader.downloadImages("https://5050-barbaratims-imageslicer-unt90271qxh.ws-eu96b.gitpod.io/getImage?image=image_"+currentLevel+".jpg&cols=3&rows=3");
+		imageDownloader.downloadImages("https://5050-barbaratims-imageslicer-7z4zsh6jp7r.ws-eu96b.gitpod.io/getImage?image=level_"+currentLevel+".jpg&cols=3&rows=3");
 		mainMenuScreen = new MainMenuScreen(this);
 		setScreen(mainMenuScreen);
 	}
@@ -45,14 +45,15 @@ public class SlidePuzzle extends Game {
 	}
 
 	public void showWinScreen(){
+		currentLevel+=1;
+		System.out.println(currentLevel);
 		DirectoryCleaner.clearDirectory("images");
-		setScreen(new WinScreen(this));
-		imageDownloader.downloadImages("https://5050-barbaratims-imageslicer-unt90271qxh.ws-eu96b.gitpod.io/getImage?image=image_"+(++currentLevel)+".jpg&cols=3&rows=3");
+		imageDownloader.downloadImages("https://5050-barbaratims-imageslicer-7z4zsh6jp7r.ws-eu96b.gitpod.io/getImage?image=level_"+currentLevel+".jpg&cols=3&rows=3");		setScreen(new WinScreen(this));
 	}
 
 	public void nextLevel(){
-		currentLevel+=1;
-		showGameScreen();
+		if(currentLevel==4) showMainMenuScreen();
+		else showGameScreen();
 	}
 
 	@Override

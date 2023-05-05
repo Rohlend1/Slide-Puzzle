@@ -29,13 +29,13 @@ public class AuthorScreen implements Screen {
 
         Skin skin = new Skin();
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font =  FontGenerator.generateFont(32,"roboto_bold.ttf");
+        buttonStyle.font =  FontGenerator.generateFont(32,"fonts/roboto_bold.ttf");
         buttonStyle.fontColor = buttonStyle.font.getColor();
         skin.add("default",skin);
 
-        labelStyleButton.font = FontGenerator.generateFont(28,"roboto_bold.ttf");
-        labelStyleTitle.font = FontGenerator.generateFont(26,"roboto_bold.ttf");
-        labelStyleText.font = FontGenerator.generateFont(24,"roboto.ttf");
+        labelStyleButton.font = FontGenerator.generateFont(28,"fonts/roboto_bold.ttf");
+        labelStyleTitle.font = FontGenerator.generateFont(26,"fonts/roboto_bold.ttf");
+        labelStyleText.font = FontGenerator.generateFont(24,"fonts/roboto.ttf");
 
         labelStyleText.fontColor = labelStyleText.font.getColor();
         labelStyleButton.fontColor = labelStyleText.font.getColor();
